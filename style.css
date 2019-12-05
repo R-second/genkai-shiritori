@@ -1,0 +1,25 @@
+h1{
+    border: 1px, solid, black;
+    text-align: center;
+}
+
+#left{
+    float:left;
+    margin-left: 100px;
+}
+#right{
+    float:right;
+    margin-right: 100px;
+}
+#start{
+    margin: 0 auto;
+    text-align: center;
+}
+#buttons{
+    text-align: center;
+    margin: 0 auto;
+}
+
+#trump{
+    text-align: center;
+}

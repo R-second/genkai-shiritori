@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang = "ja">
+    <head>
+        <meta charset = "utf-8">
+        <link rel="stylesheet" href="style.css">
+        <title>限界しりとり</title>
+    </head>
+    <body>
+        <h1>限界しりとり</h1>
+        <div id="start">
+            <button type="button" value="start" onclick="startShowing()">START</button> 
+            <button type="button" value="end" onclick="endShowing()">END</button> 
+            <br>
+            
+            <form name="letterMax">
+                最大文字数
+                <select id="max" name=”max”>
+                    <option value=6>6</option>
+                    <option value=7>7</option>
+                    <option value=8>8</option>
+                    <option value=9>9</option>
+                    <option value=10>10</option>
+                    <option value=11>11</option>
+                    <option value=12>12</option>
+                    <option value=13>13</option>
+                    <option value=14>14</option>
+                    <option value=15>15</option>
+                </select>
+            </form>
+
+            <form name="time_left">
+                持ち時間 
+                <select id="time_left" name=”left”>
+                    <option value=20>20</option>
+                    <option value=15>15</option>
+                    <option value=10>10</option>
+                    <option value=8>8</option>
+                    <option value=5>5</option>
+                    <option value=3>3</option>
+                    <option value=1>1</option>
+                </select>
+            </form>
+        
+            <p id="trump"></p>
+        </div>
+        <div id="left">
+            <h3>参加者A</h3>
+            <p id="timerA"><p>
+            <p id="passA"></p>
+        </div>
+        <div id="right">
+            <h3>参加者B</h3>
+            <p id="timerB"></p>
+            <p id="passB"></p>
+        </div>
+        <br>
+        <div id="buttons">
+            <button type="button" value="NEXT" onclick="OnNEXTClick();">NEXT</button>
+            <button type="button" value="PASS" onclick="OnPASSClick();">PASS</button><br>
+        </div>
+        <p id="results"></p>
+    
+    <script language="javascript" type="text/javascript">
+        var TIME = 15 * 60;
+        var timer = "timerA";
+        var count = 0;
+        var PassageID;
+        var answering=0;
+        var time;
+        var msg = "残り" + TIME +"秒です.";
+        var random;
+        var letter = 11;
+        var pass_cnt;
+        var pass_msg;
+    
+
+        function OnNEXTClick(){
+            if(answering == 0) { timer = "timerB"; answering = 1;}
+            else { timer = "timerA"; answering = 0;} 
+            // PassageID = setInterval('showPassage()', 1000);   // タイマーをセット(1000ms間隔)
+            random = Math.floor( Math.random() * (Number(letter) - 1) + 2 );
+            document.getElementById("trump").innerHTML = random;
+        }
+
+        function OnPASSClick(){
+            if(answering == 0) { 
+                pass_cnt[0]++; 
+                pass_msg = "passA"; 
+                pass_msg2 = pass_cnt[0]; 
+            }
+            else {
+                pass_cnt[1]++; 
+                pass_msg = "passB"; 
+                pass_msg2 = pass_cnt[1];
+            }
+            document.getElementById(pass_msg).innerHTML = "パスは" + pass_msg2 + "回です。"
+
+            OnNEXTClick();
+        }
+
+        function showPassage() {
+            time[answering]--;   // カウントアップ
+            msg = "残り" + Math.floor(time[answering]/60) +"分" + (time[answering] % 60) + "秒です。";   // 表示文作成
+            document.getElementById(timer).innerHTML = msg;   // 表示更新
+
+            console.log(time[answering])
+
+            if(time[answering] <= 0){
+                if(answering == 0) winner="B";
+                else winner = "A";
+                document.getElementById("results").innerHTML = "参加者" + winner +"の勝ちです。"
+                clearTimeout(PassageID);
+                clearInterval(PassageID);
+            }
+        }
+
+        function endShowing(){
+            clearTimeout(PassageID);
+            clearInterval(PassageID);
+        }
+
+        function startShowing() {
+            // 設定
+            letter = document.getElementById("max").value;
+            TIME = document.getElementById("time_left").value * 60;
+
+            time = [TIME, TIME];
+            pass_cnt = [0, 0];
+
+            console.log(letter)
+
+            clearTimeout(PassageID);
+            msg = "残り" + Math.floor(TIME / 60) + "分" + (TIME % 60) + "秒です。"
+            PassageID = setInterval('showPassage()', 1000);   // タイマーをセット(1000ms間隔)
+            document.getElementById("timerA").innerHTML = msg;
+            document.getElementById("timerB").innerHTML = msg;
+            random = Math.floor( Math.random() * (Number(letter) -2 ) + 2 );
+            document.getElementById("trump").innerHTML = random;
+
+            document.getElementById("passA").innerHTML = "パスは" + pass_cnt[0] + "回です。"
+            document.getElementById("passB").innerHTML = "パスは" + pass_cnt[1] + "回です。"
+            
+        }
+    </script>
+    </body>
+
+
+</html>
+
+
